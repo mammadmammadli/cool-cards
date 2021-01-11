@@ -28,6 +28,8 @@ const Card = styled.div`
   flex-direction: column;
   transition: all 0.5s ease;
   transform-style: preserve-3d;
+  background-color: white;
+  z-index: 0;
 `;
 
 const ImageContainer = styled.div`
@@ -48,10 +50,12 @@ const Info = styled.div`
   flex-direction: column;
 
   h1 {
+    transition: all 0.5s ease;
     text-align: center;
   }
 
   p {
+    transition: all 0.5s ease;
     color: gray;
   }
 `;
@@ -105,24 +109,36 @@ const mockCars = [
 function App() {
   const imagesRef = useRef([]);
   const cardsRef = useRef([]);
+  const textsRef = useRef([]);
+  const descriptionsRef = useRef([]);
 
-  const handleMouseMove = (_, i) => {
-    // const { pageX, pageY } = e;
-    // const x = (window.innerWidth / 2 - pageX) / 25;
-    // const y = (window.innerHeight / 2 - pageY) / 25;
+  const handleMouseMove = (e, i) => {
+    const { pageX, pageY } = e;
+    const x = (window.innerWidth / 2 - pageX) / 20;
+    const y = (window.innerHeight / 2 - pageY) / 20;
 
-    // cardsRef.current[i].style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-    cardsRef.current[i].style.transform = `translateZ(80px)`;
-    cardsRef.current[i].style.boxShadow = `0 20px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.2)`;
-    imagesRef.current[i].style.transform = `translateZ(50px)`;
+    cardsRef.current[i].style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    // cardsRef.current[i].style.transform = `translateZ(80px)`;
+    cardsRef.current[i].style.zIndex = `1`;
+    cardsRef.current[
+      i
+    ].style.boxShadow = `0 20px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.2)`;
+    imagesRef.current[i].style.transform = `translateZ(150px)`;
+    textsRef.current[i].style.transform = `translateZ(150px)`;
+    descriptionsRef.current[i].style.transform = `translateZ(50px)`;
   };
 
   const handleMouseLeave = (_, i) => {
     cardsRef.current[i].style.transform = `rotateY(0deg) rotateX(0deg)`;
     cardsRef.current[i].style.transition = `all 0.5s ease`;
+    cardsRef.current[i].style.zIndex = `0`;
     imagesRef.current[i].style.transform = `translateZ(0)`;
-    cardsRef.current[i].style.boxShadow = `0 10px 20px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.2)`;
+    cardsRef.current[
+      i
+    ].style.boxShadow = `0 10px 20px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.2)`;
     imagesRef.current[i].style.transition = `all 0.5s ease`;
+    textsRef.current[i].style.transform = `translateZ(0)`;
+    descriptionsRef.current[i].style.transform = `translateZ(0)`;
   };
 
   return (
@@ -151,8 +167,24 @@ function App() {
                 />
               </ImageContainer>
               <Info>
-                <h1>{title}</h1>
-                <p>{description}</p>
+                <h1
+                  ref={(el) => {
+                    if (el && !textsRef.current.includes(el)) {
+                      textsRef.current.push(el);
+                    }
+                  }}
+                >
+                  {title}
+                </h1>
+                <p
+                  ref={(el) => {
+                    if (el && !descriptionsRef.current.includes(el)) {
+                      descriptionsRef.current.push(el);
+                    }
+                  }}
+                >
+                  {description}
+                </p>
                 <ConfigureButton>Configure now</ConfigureButton>
               </Info>
             </Card>
