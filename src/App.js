@@ -106,9 +106,10 @@ function App() {
   const imagesRef = useRef([]);
   const cardsRef = useRef([]);
 
-  const handleMouseMove = ({ pageX, pageY }, i) => {
-    const x = (window.innerWidth / 2 - pageX) / 25;
-    const y = (window.innerHeight / 2 - pageY) / 25;
+  const handleMouseMove = (_, i) => {
+    // const { pageX, pageY } = e;
+    // const x = (window.innerWidth / 2 - pageX) / 25;
+    // const y = (window.innerHeight / 2 - pageY) / 25;
 
     // cardsRef.current[i].style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
     cardsRef.current[i].style.transform = `translateZ(80px)`;
